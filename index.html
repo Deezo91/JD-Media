@@ -35,10 +35,10 @@
     section { padding: 6rem 3rem; }
     .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; }
     .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.06em; color: var(--cream); line-height: 1; margin-bottom: 2rem; }
-    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; border-bottom: 1px solid rgba(184,154,116,0.12); }
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; border-bottom: 1px solid rgba(184,154,116,0.12); gap: 5rem; align-items: center; border-bottom: 1px solid rgba(184,154,116,0.12); }
     .about-text p { font-size: 0.88rem; line-height: 1.9; color: rgba(240,235,226,0.75); margin-bottom: 1.2rem; }
     .about-text p strong { color: var(--cream); }
-    .about-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--tan); line-height: 1.5; border-left: 3px solid var(--rust); padding-left: 1.8rem; }
+    .about-photo { width: 100%; max-width: 480px; border: 1px solid rgba(184,154,116,0.25); filter: sepia(20%) contrast(1.05); display: block; } .about-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--tan); line-height: 1.5; border-left: 3px solid var(--rust); padding-left: 1.8rem; }
     .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
     .stat-box { border: 1px solid rgba(184,154,116,0.2); padding: 1.2rem; }
     .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--rust); }
@@ -135,6 +135,7 @@
     <div>
       <blockquote class="about-quote">"Working dad building an empire -- one shoot, one machine, one day at a time."</blockquote>
     </div>
+        <img src="profile.jpg" alt="Josh Diaz" class="about-photo">
   </section>
   <section id="ventures">
     <p class="section-label">What We Build</p>
