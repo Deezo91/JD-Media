@@ -292,18 +292,17 @@ footer{padding:3rem;border-top:1px solid rgba(212,160,23,0.15);
     <rect x="900" y="40" width="480" height="340" fill="none" stroke="rgba(212,160,23,0.12)" stroke-width="1.5" filter="url(#roughen)"/>
     <rect x="920" y="55" width="445" height="315" fill="none" stroke="rgba(212,160,23,0.06)" stroke-width="0.8"/>
 
-    <!-- Crown/star motif - top right quadrant -->
-    <g transform="translate(1140, 160)" opacity="0.22">
-      <!-- Crown base -->
-      <rect x="-70" y="30" width="140" height="28" fill="none" stroke="#D4A017" stroke-width="2"/>
-      <!-- Crown points -->
-      <polyline points="-70,30 -70,-10 -35,18 0,-30 35,18 70,-10 70,30" fill="none" stroke="#D4A017" stroke-width="2"/>
-      <!-- Jewels -->
-      <circle cx="-70" cy="-10" r="5" fill="#D4A017"/>
-      <circle cx="0" cy="-30" r="7" fill="#D4A017"/>
-      <circle cx="70" cy="-10" r="5" fill="#D4A017"/>
-      <!-- Star center -->
-      <polygon points="0,-18 4,-6 16,-6 7,2 10,14 0,8 -10,14 -7,2 -16,-6 -4,-6" fill="#D4A017" opacity="0.5"/>
+    <!-- Geometric diamond accent - top right -->
+    <g transform="translate(1140, 160)" opacity="0.25">
+      <!-- Large diamond -->
+      <polygon points="0,-60 45,0 0,60 -45,0" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <!-- Inner diamond -->
+      <polygon points="0,-38 28,0 0,38 -28,0" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <!-- Center fill -->
+      <circle cx="0" cy="0" r="6" fill="#D4A017" opacity="0.6"/>
+      <!-- Cross hairs -->
+      <line x1="-55" y1="0" x2="55" y2="0" stroke="#D4A017" stroke-width="0.8" opacity="0.4"/>
+      <line x1="0" y1="-68" x2="0" y2="68" stroke="#D4A017" stroke-width="0.8" opacity="0.4"/>
     </g>
 
     <!-- Spray tag style block - bottom left -->
@@ -481,13 +480,18 @@ footer{padding:3rem;border-top:1px solid rgba(212,160,23,0.15);
       <polyline points="500,625 440,625 440,619" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
       <polyline points="500,625 500,565 494,565" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
 
-      <!-- Crown motif top center -->
-      <g transform="translate(250, 55)" opacity="0.35">
-        <polyline points="-50,25 -50,-8 -22,14 0,-22 22,14 50,-8 50,25" fill="none" stroke="#D4A017" stroke-width="2"/>
-        <rect x="-50" y="25" width="100" height="20" fill="none" stroke="#D4A017" stroke-width="2"/>
-        <circle cx="-50" cy="-8" r="4" fill="#D4A017"/>
-        <circle cx="0" cy="-22" r="5" fill="#D4A017"/>
-        <circle cx="50" cy="-8" r="4" fill="#D4A017"/>
+      <!-- Geometric X / crosshatch accent - top center -->
+      <g transform="translate(250, 55)" opacity="0.3">
+        <!-- Bold X mark -->
+        <line x1="-40" y1="-30" x2="40" y2="30" stroke="#D4A017" stroke-width="3"/>
+        <line x1="40" y1="-30" x2="-40" y2="30" stroke="#D4A017" stroke-width="3"/>
+        <!-- Diamond ring -->
+        <polygon points="0,-42 30,0 0,42 -30,0" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+        <!-- Corner dots -->
+        <circle cx="-40" cy="-30" r="4" fill="#D4A017"/>
+        <circle cx="40" cy="-30" r="4" fill="#D4A017"/>
+        <circle cx="-40" cy="30" r="4" fill="#D4A017"/>
+        <circle cx="40" cy="30" r="4" fill="#D4A017"/>
       </g>
 
       <!-- Bottom text tag -->
@@ -532,13 +536,17 @@ footer{padding:3rem;border-top:1px solid rgba(212,160,23,0.15);
       <text x="45" y="135" font-family="monospace" font-size="9" fill="rgba(184,154,116,0.5)" letter-spacing="3">BUILT DAILY</text>
     </g>
 
-    <!-- Center crown -->
+    <!-- Center diamond cluster -->
     <g transform="translate(720, 90)" opacity="0.3">
-      <polyline points="-80,40 -80,-15 -40,22 0,-40 40,22 80,-15 80,40" fill="none" stroke="#D4A017" stroke-width="2"/>
-      <rect x="-80" y="40" width="160" height="25" fill="none" stroke="#D4A017" stroke-width="2"/>
-      <circle cx="-80" cy="-15" r="5" fill="#D4A017"/>
-      <circle cx="0" cy="-40" r="7" fill="#D4A017"/>
-      <circle cx="80" cy="-15" r="5" fill="#D4A017"/>
+      <!-- Outer diamond -->
+      <polygon points="0,-50 38,0 0,50 -38,0" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <!-- Mid diamond -->
+      <polygon points="0,-30 22,0 0,30 -22,0" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+      <!-- Center -->
+      <polygon points="0,-12 9,0 0,12 -9,0" fill="#D4A017"/>
+      <!-- Side dots -->
+      <circle cx="-50" cy="0" r="4" fill="#D4A017"/>
+      <circle cx="50" cy="0" r="4" fill="#D4A017"/>
     </g>
 
     <!-- Right block -->
