@@ -1,245 +1,844 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JD Media — Built Daily</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --cream: #f0ebe2; --ink: #1a1510; --rust: #c04b1e; --tan: #b89a74; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--ink); color: var(--cream); font-family: 'IBM Plex Mono', monospace; overflow-x: hidden; }
-    body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.045; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); background-size: 200px 200px; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 3rem; background: rgba(26,21,16,0.88); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(184,154,116,0.15); }
-    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.12em; color: var(--cream); text-decoration: none; }
-    .nav-logo span { color: var(--rust); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); text-decoration: none; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--cream); }
-    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 3rem; padding-top: 6rhem; position: relative; border-bottom: 1px solid rgba(184,154,116,0.18); }
-    .hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.2rem; }
-    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 13vw, 12rem); line-height: 0.92; letter-spacing: 0.04em; color: var(--cream); }
-    .hero-title span { color: var(--rust); }
-    .hero-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.7rem); color: var(--tan); margin-top: 1.8rem; max-width: 520px; }
-    .hero-cta { margin-top: 2.8rem; display: flex; gap: 1.2rem; flex-wrap: wrap; }
-    .btn-primary { display: inline-block; padding: 0.85rem 2.2rem; background: var(--rust); color: var(--cream); font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; }
-    .btn-primary:hover { background: #a03b12; transform: translateY(-2px); }
-    .btn-secondary { display: inline-block; padding: 0.85rem 2.2rem; background: transparent; color: var(--cream); font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(240,235,226,0.3); cursor: pointer; transition: border-color 0.2s, transform 0.15s; }
-    .btn-secondary:hover { border-color: var(--cream); transform: translateY(-2px); }
-    .hero-corner { position: absolute; bottom: 3rem; right: 3rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(184,154,116,0.5); text-transform: uppercase; writing-mode: vertical-rl; }
-    .ticker-wrap { overflow: hidden; background: var(--rust); padding: 0.65rem 0; }
-    .ticker-track { display: flex; width: max-content; animation: ticker 22s linear infinite; }
-    .ticker-item { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.2em; color: var(--cream); padding: 0 2.5rem; white-space: nowrap; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    section { padding: 6rem 3rem; }
-    .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; }
-    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.06em; color: var(--cream); line-height: 1; margin-bottom: 2rem; }
-    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; border-bottom: 1px solid rgba(184,154,116,0.12); gap: 5rem; align-items: center; border-bottom: 1px solid rgba(184,154,116,0.12); }
-    .about-text p { font-size: 0.88rem; line-height: 1.9; color: rgba(240,235,226,0.75); margin-bottom: 1.2rem; }
-    .about-text p strong { color: var(--cream); }
-    .about-photo { width: 100%; max-width: 480px; border: 1px solid rgba(184,154,116,0.25); filter: sepia(20%) contrast(1.05); display: block; } .about-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--tan); line-height: 1.5; border-left: 3px solid var(--rust); padding-left: 1.8rem; }
-    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-    .stat-box { border: 1px solid rgba(184,154,116,0.2); padding: 1.2rem; }
-    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--rust); }
-    .stat-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-top: 0.3rem; }
-    #ventures { border-bottom: 1px solid rgba(184,154,116,0.12); }
-    .ventures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
-    .venture-card { border: 1px solid rgba(184,154,116,0.2); padding: 2.2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; background: rgba(26,21,16,0.4); }
-    .venture-card:hover { border-color: rgba(192,75,30,0.5); transform: translateY(-4px); }
-    .venture-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: rgba(184,154,116,0.12); line-height: 1; position: absolute; top: 1rem; right: 1.5rem; }
-    .venture-status { display: inline-block; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 0.25rem 0.7rem; border: 1px solid; margin-bottom: 1.2rem; }
-    .status-active { border-color: #4caf50; color: #4caf50; }
-    .status-scaling { border-color: var(--rust); color: var(--rust); }
-    .status-dev { border-color: var(--tan); color: var(--tan); }
-    .venture-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.08em; color: var(--cream); margin-bottom: 0.5rem; }
-    .venture-type { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.2rem; }
-    .venture-desc { font-size: 0.8rem; line-height: 1.8; color: rgba(240,235,226,0.6); margin-bottom: 1.5rem; }
-    .venture-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--rust); letter-spacing: 0.1em; }
-    #story { border-bottom: 1px solid rgba(184,154,116,0.12); }
-    .timeline { position: relative; margin-top: 3rem; padding-left: 2rem; }
-    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--rust), rgba(192,75,30,0.1)); }
-    .timeline-item { position: relative; padding: 0 0 3rem 3rem; }
-    .timeline-item::before { content: ''; position: absolute; left: -4px; top: 6px; width: 9px; height: 9px; background: var(--rust); border-radius: 50%; }
-    .timeline-date { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.5rem; }
-    .timeline-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.08em; color: var(--cream); margin-bottom: 0.6rem; }
-    .timeline-body { font-size: 0.8rem; line-height: 1.8; color: rgba(240,235,226,0.6); max-width: 520px; }
-    #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-    .contact-info p { font-size: 0.8rem; line-height: 1.9; color: rgba(240,235,226,0.65); margin-bottom: 0.6rem; }
-    .contact-info a { color: var(--rust); text-decoration: none; }
-    .contact-socials { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
-    .social-link { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.6rem 1.2rem; border: 1px solid rgba(184,154,116,0.3); color: var(--tan); text-decoration: none; transition: all 0.2s; }
-    .social-link:hover { border-color: var(--rust); color: var(--cream); }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); }
-    .form-group input, .form-group select, .form-group textarea { background: rgba(240,235,226,0.05); border: 1px solid rgba(184,154,116,0.2); color: var(--cream); font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; padding: 0.8rem 1rem; outline: none; transition: border-color 0.2s; resize: none; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rust); }
-    .form-group select option { background: var(--ink); }
-    footer { padding: 2.5rem 3rem; border-top: 1px solid rgba(184,154,116,0.12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.12em; color: var(--cream); }
-    .footer-logo span { color: var(--rust); }
-    .footer-copy { font-size: 0.65rem; letter-spacing: 0.15em; color: rgba(184,154,116,0.45); text-transform: uppercase; }
-    @media (max-width: 900px) { nav { padding: 1rem 1.5rem; } section { padding: 4rem 1.5rem; } #hero { padding: 0 1.5rem; padding-top: 5rem; } #about { grid-template-columns: 1fr; gap: 3rem; } .ventures-grid { grid-template-columns: 1fr; } #contact { grid-template-columns: 1fr; gap: 3rem; } footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; } }
-  </style>
-</head>
-<body>
-  <nav>
-    <a href="#hero" class="nav-logo">JD<span>.</span>MEDIA</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#ventures">Ventures</a></li>
-      <li><a href="#story">Story</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-  <section id="hero">
-    <p class="hero-eyebrow">Colorado -- Est. 2025</p>
-    <h1 class="hero-title">JD<span>.</span><br>MEDIA</h1>
-    <p class="hero-sub">Built Daily. Photography, vending, and empire-building -- one grind at a time.</p>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JD Media — Built Daily | Josh Diaz | Northern Colorado</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f0ebe2;
+  --ink:#0f0d0a;
+  --gold:#D4A017;
+  --gold-dim:rgba(212,160,23,0.15);
+  --rust:#c04b1e;
+  --tan:#b89a74;
+  --white:#ffffff;
+  --off:#1a1510;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:'IBM Plex Mono',monospace;overflow-x:hidden}
+
+/* FILM GRAIN OVERLAY */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 3rem;background:rgba(15,13,10,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(212,160,23,0.2)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--cream);text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:normal}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--tan);text-decoration:none;
+  transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;
+  background:var(--gold);transition:width 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-book{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.55rem 1.4rem;
+  background:var(--gold);color:var(--ink);text-decoration:none;font-weight:600;
+  transition:background 0.2s,transform 0.15s}
+.nav-book:hover{background:#e8b420;transform:translateY(-1px)}
+
+/* ═══ HERO ═══ */
+#hero{min-height:100vh;position:relative;display:flex;flex-direction:column;
+  justify-content:center;padding:0 3rem;padding-top:5rem;overflow:hidden}
+
+/* Street Art SVG Background */
+.hero-mural{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-eyebrow{font-size:0.68rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,14vw,13rem);line-height:0.88;letter-spacing:0.03em;color:var(--cream)}
+.hero-title .gold{color:var(--gold)}
+.hero-title .outline{-webkit-text-stroke:2px var(--cream);color:transparent}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(1rem,2.2vw,1.5rem);color:rgba(240,235,226,0.7);
+  margin-top:2rem;max-width:500px;line-height:1.6}
+.hero-cta{margin-top:3rem;display:flex;gap:1.2rem;flex-wrap:wrap}
+.btn-gold{display:inline-block;padding:0.9rem 2.4rem;background:var(--gold);
+  color:var(--ink);font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;
+  text-decoration:none;font-weight:700;transition:all 0.2s;border:2px solid var(--gold)}
+.btn-gold:hover{background:transparent;color:var(--gold);transform:translateY(-2px)}
+.btn-ghost{display:inline-block;padding:0.9rem 2.4rem;background:transparent;
+  color:var(--cream);font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;
+  text-decoration:none;border:2px solid rgba(240,235,226,0.4);transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--cream);transform:translateY(-2px)}
+
+.hero-stats{position:absolute;bottom:3rem;right:3rem;z-index:2;
+  display:flex;flex-direction:column;gap:1rem;text-align:right}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--gold);line-height:1}
+.hero-stat-lbl{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(184,154,116,0.6)}
+.hero-loc{position:absolute;bottom:3rem;left:3rem;z-index:2;
+  font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(212,160,23,0.6);writing-mode:vertical-rl}
+
+/* ═══ TICKER ═══ */
+.ticker{overflow:hidden;background:var(--gold);padding:0.7rem 0;border-top:1px solid rgba(255,255,255,0.1)}
+.ticker-track{display:flex;width:max-content;animation:tick 25s linear infinite}
+.ticker-item{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:0.2em;
+  color:var(--ink);padding:0 2.5rem;white-space:nowrap}
+.ticker-dot{color:rgba(15,13,10,0.4);padding:0 0.5rem}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══ SHARED SECTION ═══ */
+section{padding:7rem 3rem}
+.section-kicker{font-size:0.62rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
+.section-kicker::before{content:'';width:30px;height:1px;background:var(--gold)}
+.section-heading{font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,7vw,6rem);letter-spacing:0.05em;
+  color:var(--cream);line-height:0.95;margin-bottom:2.5rem}
+.gold-line{display:block;color:var(--gold)}
+
+/* ═══ ABOUT ═══ */
+#about{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+  border-bottom:1px solid rgba(212,160,23,0.1)}
+.about-text p{font-size:0.85rem;line-height:1.95;color:rgba(240,235,226,0.72);margin-bottom:1.3rem}
+.about-text strong{color:var(--cream)}
+.about-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.5rem;
+  line-height:1.55;color:var(--tan);border-left:3px solid var(--gold);
+  padding-left:1.8rem;margin-bottom:2rem}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(212,160,23,0.12);
+  border:1px solid rgba(212,160,23,0.12);margin-top:2.5rem}
+.stat-box{padding:1.4rem;background:var(--ink)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--gold);line-height:1}
+.stat-label{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--tan);margin-top:0.3rem}
+
+/* ABOUT ART PANEL */
+.about-art-panel{position:relative;width:100%;aspect-ratio:4/5;
+  border:1px solid rgba(212,160,23,0.25);overflow:hidden}
+.about-art-panel svg{width:100%;height:100%}
+.about-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:sepia(30%) contrast(1.1) brightness(0.85);mix-blend-mode:luminosity;opacity:0.6}
+
+/* ═══ VENTURES ═══ */
+#ventures{border-bottom:1px solid rgba(212,160,23,0.1)}
+.ventures-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(212,160,23,0.1);margin-top:3.5rem;border:1px solid rgba(212,160,23,0.1)}
+.venture-card{background:var(--ink);padding:2.5rem;position:relative;overflow:hidden;
+  transition:background 0.3s}
+.venture-card:hover{background:#141008}
+.venture-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.venture-card:hover::before{transform:scaleX(1)}
+.venture-num{font-family:'Bebas Neue',sans-serif;font-size:5rem;
+  color:rgba(212,160,23,0.07);line-height:1;position:absolute;top:0.5rem;right:1.5rem}
+.venture-icon{margin-bottom:1.5rem;width:48px;height:48px}
+.venture-status{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.58rem;
+  letter-spacing:0.22em;text-transform:uppercase;margin-bottom:1.3rem}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-active .status-dot{background:#4ade80;box-shadow:0 0 8px #4ade80}
+.status-active{color:#4ade80}
+.status-scaling .status-dot{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.status-scaling{color:var(--gold)}
+.status-dev .status-dot{background:var(--tan)}
+.status-dev{color:var(--tan)}
+.venture-name{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.07em;
+  color:var(--cream);margin-bottom:0.4rem}
+.venture-type{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.3rem;opacity:0.7}
+.venture-desc{font-size:0.78rem;line-height:1.85;color:rgba(240,235,226,0.58);margin-bottom:1.8rem}
+.venture-links{display:flex;flex-direction:column;gap:0.5rem}
+.venture-link{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--tan);text-decoration:none;padding:0.5rem 0;
+  border-bottom:1px solid rgba(212,160,23,0.12);transition:color 0.2s,border-color 0.2s}
+.venture-link:hover{color:var(--gold);border-color:var(--gold)}
+.venture-link::before{content:'↗ '}
+.venture-pricing{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
+  color:var(--gold);letter-spacing:0.1em;margin-bottom:1rem}
+
+/* ═══ WALL ART DIVIDER ═══ */
+.mural-divider{width:100%;overflow:hidden;background:var(--off);
+  border-top:1px solid rgba(212,160,23,0.1);border-bottom:1px solid rgba(212,160,23,0.1)}
+.mural-divider svg{width:100%;height:auto;display:block}
+
+/* ═══ STORY ═══ */
+#story{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;
+  border-bottom:1px solid rgba(212,160,23,0.1)}
+.timeline{margin-top:1rem}
+.timeline-item{display:grid;grid-template-columns:auto 1fr;gap:2rem;margin-bottom:3.5rem;
+  position:relative}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:11px;top:24px;
+  bottom:-3.5rem;width:1px;background:linear-gradient(to bottom,var(--gold),rgba(212,160,23,0.05))}
+.timeline-dot{width:24px;height:24px;border:2px solid var(--gold);border-radius:50%;
+  flex-shrink:0;position:relative;margin-top:2px;background:var(--ink)}
+.timeline-dot::after{content:'';position:absolute;inset:4px;background:var(--gold);border-radius:50%}
+.timeline-date{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;opacity:0.8}
+.timeline-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:0.07em;
+  color:var(--cream);margin-bottom:0.6rem;line-height:1}
+.timeline-body{font-size:0.78rem;line-height:1.9;color:rgba(240,235,226,0.58)}
+
+/* ═══ CONTACT ═══ */
+#contact{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
+.contact-intro p{font-size:0.82rem;line-height:1.9;color:rgba(240,235,226,0.65);margin-bottom:0.8rem}
+.contact-intro a{color:var(--gold);text-decoration:none}
+.contact-intro a:hover{text-decoration:underline}
+.contact-socials{display:flex;flex-wrap:wrap;gap:0.7rem;margin-top:2rem}
+.social-pill{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.55rem 1.2rem;border:1px solid rgba(212,160,23,0.3);color:var(--tan);
+  text-decoration:none;transition:all 0.2s}
+.social-pill:hover{border-color:var(--gold);color:var(--gold)}
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:0.4rem}
+.form-group label{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold)}
+.form-group input,.form-group select,.form-group textarea{
+  background:rgba(212,160,23,0.04);border:1px solid rgba(212,160,23,0.18);
+  color:var(--cream);font-family:'IBM Plex Mono',monospace;font-size:0.8rem;
+  padding:0.85rem 1rem;outline:none;transition:border-color 0.2s;resize:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--gold)}
+.form-group select option{background:#0f0d0a}
+.form-group input::placeholder,.form-group textarea::placeholder{
+  color:rgba(184,154,116,0.4)}
+.btn-submit{padding:1rem 2.5rem;background:var(--gold);color:var(--ink);
+  font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.25em;
+  text-transform:uppercase;font-weight:700;border:none;cursor:pointer;
+  transition:all 0.2s;align-self:flex-start;border:2px solid var(--gold)}
+.btn-submit:hover{background:transparent;color:var(--gold)}
+
+/* ═══ FOOTER ═══ */
+footer{padding:3rem;border-top:1px solid rgba(212,160,23,0.15);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:2rem}
+.footer-brand{display:flex;flex-direction:column;gap:0.5rem}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--cream)}
+.footer-logo em{color:var(--gold);font-style:normal}
+.footer-tagline{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(184,154,116,0.5)}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-links a{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(184,154,116,0.5);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:0.58rem;letter-spacing:0.15em;
+  color:rgba(184,154,116,0.3);text-transform:uppercase;text-align:right}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  nav{padding:1rem 1.5rem}
+  section{padding:5rem 1.5rem}
+  #hero{padding:0 1.5rem;padding-top:5rem}
+  #about{grid-template-columns:1fr;gap:3rem}
+  .ventures-grid{grid-template-columns:1fr}
+  #story{grid-template-columns:1fr}
+  #contact{grid-template-columns:1fr;gap:3rem}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:2rem 1.5rem;flex-direction:column;text-align:center}
+  .footer-copy{text-align:center}
+  .hero-stats{position:relative;bottom:auto;right:auto;margin-top:3rem;
+    flex-direction:row;justify-content:flex-start;gap:2rem;text-align:left}
+  .hero-loc{display:none}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero-title{font-size:clamp(4rem,18vw,7rem)}
+}
+</style>
+</head><body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a href="#hero" class="nav-logo">JD<em>.</em>MEDIA</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#ventures">Ventures</a></li>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-book">Book Now</a>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+
+  <!-- Street Art SVG Mural Background -->
+  <svg class="hero-mural" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="roughen"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#181210;stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:#0a0806;stop-opacity:1"/>
+      </linearGradient>
+      <radialGradient id="spotGold" cx="75%" cy="30%" r="40%">
+        <stop offset="0%" style="stop-color:#D4A017;stop-opacity:0.08"/>
+        <stop offset="100%" style="stop-color:#D4A017;stop-opacity:0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Base wall -->
+    <rect width="1440" height="900" fill="url(#wallGrad)"/>
+    <!-- Gold spotlight -->
+    <rect width="1440" height="900" fill="url(#spotGold)"/>
+
+    <!-- Concrete texture blocks -->
+    <rect x="0" y="0" width="1440" height="900" fill="none" stroke="rgba(255,255,255,0.012)" stroke-width="1">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="8s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Big ghost letterform "JD" background -->
+    <text x="640" y="680" font-family="Arial Black, sans-serif" font-size="680" font-weight="900"
+      fill="none" stroke="rgba(212,160,23,0.06)" stroke-width="2"
+      text-anchor="middle" letter-spacing="-20">JD</text>
+
+    <!-- Large geometric frame - top right -->
+    <rect x="900" y="40" width="480" height="340" fill="none" stroke="rgba(212,160,23,0.12)" stroke-width="1.5" filter="url(#roughen)"/>
+    <rect x="920" y="55" width="445" height="315" fill="none" stroke="rgba(212,160,23,0.06)" stroke-width="0.8"/>
+
+    <!-- Crown/star motif - top right quadrant -->
+    <g transform="translate(1140, 160)" opacity="0.22">
+      <!-- Crown base -->
+      <rect x="-70" y="30" width="140" height="28" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <!-- Crown points -->
+      <polyline points="-70,30 -70,-10 -35,18 0,-30 35,18 70,-10 70,30" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <!-- Jewels -->
+      <circle cx="-70" cy="-10" r="5" fill="#D4A017"/>
+      <circle cx="0" cy="-30" r="7" fill="#D4A017"/>
+      <circle cx="70" cy="-10" r="5" fill="#D4A017"/>
+      <!-- Star center -->
+      <polygon points="0,-18 4,-6 16,-6 7,2 10,14 0,8 -10,14 -7,2 -16,-6 -4,-6" fill="#D4A017" opacity="0.5"/>
+    </g>
+
+    <!-- Spray tag style block - bottom left -->
+    <g transform="translate(60, 620)" opacity="0.15">
+      <rect x="0" y="0" width="320" height="90" fill="none" stroke="#D4A017" stroke-width="1.5" filter="url(#roughen)"/>
+      <text x="16" y="38" font-family="Arial Black" font-size="26" fill="#D4A017" font-weight="900" letter-spacing="3">BUILT DAILY</text>
+      <text x="16" y="68" font-family="Arial Black" font-size="16" fill="#b89a74" font-weight="700" letter-spacing="6">NOCO · EST 2025</text>
+    </g>
+
+    <!-- Diagonal accent lines - top right -->
+    <line x1="1440" y1="0" x2="1100" y2="400" stroke="rgba(212,160,23,0.08)" stroke-width="80"/>
+    <line x1="1440" y1="0" x2="1200" y2="300" stroke="rgba(212,160,23,0.05)" stroke-width="40"/>
+
+    <!-- Corner bracket - bottom right -->
+    <g opacity="0.2">
+      <polyline points="1390,870 1440,870 1440,820" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <text x="1300" y="865" font-family="monospace" font-size="11" fill="#D4A017" letter-spacing="2">40.3772° N, 104.9903° W</text>
+    </g>
+
+    <!-- Horizontal rule lines -->
+    <line x1="0" y1="140" x2="400" y2="140" stroke="rgba(212,160,23,0.07)" stroke-width="1"/>
+    <line x1="0" y1="145" x2="280" y2="145" stroke="rgba(212,160,23,0.04)" stroke-width="0.5"/>
+
+    <!-- Dot matrix pattern - top right area -->
+    <g opacity="0.06">
+      <circle cx="1000" cy="80" r="2" fill="#D4A017"/>
+      <circle cx="1030" cy="80" r="2" fill="#D4A017"/>
+      <circle cx="1060" cy="80" r="2" fill="#D4A017"/>
+      <circle cx="1000" cy="110" r="2" fill="#D4A017"/>
+      <circle cx="1030" cy="110" r="2" fill="#D4A017"/>
+      <circle cx="1060" cy="110" r="2" fill="#D4A017"/>
+      <circle cx="1000" cy="140" r="2" fill="#D4A017"/>
+      <circle cx="1030" cy="140" r="2" fill="#D4A017"/>
+      <circle cx="1060" cy="140" r="2" fill="#D4A017"/>
+    </g>
+
+    <!-- Abstract camera lens shape - right side -->
+    <g transform="translate(1200, 480)" opacity="0.08">
+      <circle cx="0" cy="0" r="120" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <circle cx="0" cy="0" r="90" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+      <circle cx="0" cy="0" r="20" fill="#D4A017" opacity="0.3"/>
+      <!-- Aperture blades -->
+      <line x1="-120" y1="0" x2="120" y2="0" stroke="#D4A017" stroke-width="0.5"/>
+      <line x1="0" y1="-120" x2="0" y2="120" stroke="#D4A017" stroke-width="0.5"/>
+      <line x1="-85" y1="-85" x2="85" y2="85" stroke="#D4A017" stroke-width="0.5"/>
+      <line x1="85" y1="-85" x2="-85" y2="85" stroke="#D4A017" stroke-width="0.5"/>
+    </g>
+
+    <!-- Vending machine silhouette - left mid -->
+    <g transform="translate(420, 300)" opacity="0.06">
+      <rect x="0" y="0" width="100" height="160" rx="4" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <rect x="8" y="8" width="84" height="80" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <rect x="12" y="100" width="76" height="8" fill="#D4A017"/>
+      <rect x="12" y="115" width="76" height="8" fill="#D4A017"/>
+      <rect x="35" y="138" width="30" height="14" rx="2" fill="#D4A017"/>
+    </g>
+
+    <!-- Rough spray stroke accent -->
+    <path d="M0,200 Q200,180 400,220 Q500,240 600,200" stroke="rgba(212,160,23,0.04)" stroke-width="40" fill="none" filter="url(#roughen)"/>
+
+    <!-- Bottom gradient fade to black -->
+    <rect x="0" y="700" width="1440" height="200" fill="url(#botFade)" opacity="1"/>
+    <defs>
+      <linearGradient id="botFade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" style="stop-color:#0f0d0a;stop-opacity:0"/>
+        <stop offset="100%" style="stop-color:#0f0d0a;stop-opacity:1"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Northern Colorado &nbsp;·&nbsp; Est. 2025</p>
+    <h1 class="hero-title">
+      WORKING<br>
+      <span class="gold">DAD</span><br>
+      <span class="outline">BUILDING</span><br>
+      AN <span class="gold">EMPIRE</span>
+    </h1>
+    <p class="hero-sub">Photography that hits different. Vending that generates. A legacy being built one day at a time.</p>
     <div class="hero-cta">
-      <a href="#ventures" class="btn-primary">See the Ventures</a>
-      <a href="#contact" class="btn-secondary">Book a Session</a>
-    </div>
-    <span class="hero-corner">Built Daily -- Josh Diaz</span>
-  </section>
-  <div class="ticker-wrap">
-    <div class="ticker-track">
-      <span class="ticker-item">JD Photography &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">JD Snack Stop &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">JD Elite Canines &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">Built Daily &nbsp; &bull; &nbsp;</span>
-      
-      <span class="ticker-item">Raw Real Remembered &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">JD Photography &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">JD Snack Stop &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">JD Elite Canines &nbsp; &bull; &nbsp;</span>
-      <span class="ticker-item">Built Daily &nbsp; &bull; &nbsp;</span>
-      
-      <span class="ticker-item">Raw Real Remembered &nbsp; &bull; &nbsp;</span>
+      <a href="#ventures" class="btn-gold">See the Ventures</a>
+      <a href="#contact" class="btn-ghost">Book a Session</a>
     </div>
   </div>
-  <section id="about">
-    <div class="about-text">
-      <p class="section-label">About</p>
-      <h2 class="section-title">Who Is<br>Josh Diaz</h2>
-      <p>Bartender by day. Photographer, entrepreneur, husband, and new father every other hour. <strong>JD Media</strong> is the umbrella for everything I'm building -- not someday, but right now.</p>
-      <p>I shoot truth over perfection. I build businesses with the time I have, not the time I wish I had. No guru energy. No fake highlight reels. Just <strong>real work, documented daily.</strong></p>
-      <div class="about-stats">
-        <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Active Ventures</div></div>
-        <div class="stat-box"><div class="stat-num">$3.5K</div><div class="stat-label">Monthly Goal</div></div>
-        <div class="stat-box"><div class="stat-num">CO</div><div class="stat-label">Based In</div></div>
-        <div class="stat-box"><div class="stat-num">100%</div><div class="stat-label">Self-Built</div></div>
-      </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">3</div>
+      <div class="hero-stat-lbl">Ventures</div>
     </div>
     <div>
-      <blockquote class="about-quote">"Working dad building an empire -- one shoot, one machine, one day at a time."</blockquote>
+      <div class="hero-stat-num">NOCO</div>
+      <div class="hero-stat-lbl">Based In</div>
     </div>
-        <img src="profile.jpg" alt="Josh Diaz" class="about-photo">
-  </section>
-  <section id="ventures">
-    <p class="section-label">What We Build</p>
-    <h2 class="section-title">The Ventures</h2>
-    <div class="ventures-grid">
-      <div class="venture-card">
-        <div class="venture-num">01</div>
-        <span class="venture-status status-active">Active and Booking</span>
-        <h3 class="venture-name">JD Photography</h3>
-        <p class="venture-type">Documentary - Film-Inspired - High-Ticket</p>
-        <p class="venture-desc">Real moments. No filters. No pretending. Family, maternity, couples, portraits, and newborn sessions with a raw, Kodak-film aesthetic.</p>
-        <div class="venture-price">Family $150+ / Maternity $175+ / Couples $150+</div>
-        <a href="https://www.instagram.com/joshdiazphotography" target="_blank" class="social-link" style="margin-top:1rem;display:inline-block;">@joshdiazphotography</a><a href="https://www.tiktok.com/@joshdeezo" target="_blank" class="social-link" style="margin-top:1rem;display:inline-block;">@joshdeezo (TikTok)</a>
+    <div>
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-lbl">Self Built</div>
+    </div>
+  </div>
+
+  <div class="hero-loc">Josh Diaz &nbsp;·&nbsp; JD Media &nbsp;·&nbsp; Built Daily</div>
+</section>
+
+<!-- ══════════════════ TICKER ══════════════════ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">JD Photography</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">JD Snack Stop</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">JD Elite Canines</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Built Daily</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Northern Colorado</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Raw Real Remembered</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">JD Photography</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">JD Snack Stop</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">JD Elite Canines</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Built Daily</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Northern Colorado</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Raw Real Remembered</span><span class="ticker-dot">◆</span>
+  </div>
+</div>
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section id="about">
+  <div class="about-text">
+    <p class="section-kicker">About</p>
+    <h2 class="section-heading">Who Is<br><span class="gold-line">Josh Diaz</span></h2>
+    <p>Bartender by shift. Photographer, entrepreneur, husband, and new father every other minute. <strong>JD Media</strong> is the umbrella I built for everything I'm working toward — not someday, but right now.</p>
+    <p>I shoot truth over perfection. I build businesses with the time I have, not the time I wish I had. No guru energy. No fake highlight reels. Just <strong>real work, documented daily</strong> out of Northern Colorado.</p>
+    <blockquote class="about-quote">"Working dad building an empire — one shoot, one machine, one day at a time."</blockquote>
+    <div class="about-stats">
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Active Ventures</div>
       </div>
-      <div class="venture-card">
-        <div class="venture-num">02</div>
-        <span class="venture-status status-scaling">Scaling Now</span>
-        <h3 class="venture-name">JD Snack Stop</h3>
-        <p class="venture-type">Vending Machines - Cash Flow - Passive Income</p>
-        <p class="venture-desc">Building a vending machine network across gyms, warehouses, schools, and salons in Colorado. Currently at 2 machines, targeting 5-10.</p>
-        <div class="venture-price">$300-$500 / Machine / Month</div>
-        <a href="https://www.instagram.com/jd.snack.stop" target="_blank" class="social-link" style="margin-top:1rem;display:inline-block;">@jd.snack.stop</a><a href="https://www.tiktok.com/@jd.snack.stop" target="_blank" class="social-link" style="margin-top:1rem;display:inline-block;">@jd.snack.stop (TikTok)</a>
+      <div class="stat-box">
+        <div class="stat-num">NOCO</div>
+        <div class="stat-label">Northern Colorado</div>
       </div>
-      <div class="venture-card">
-        <div class="venture-num">03</div>
-        <span class="venture-status status-dev">In Development</span>
-        <h3 class="venture-name">JD Elite Canines</h3>
-        <p class="venture-type">Premium Canines - Training - Future Asset</p>
-        <p class="venture-desc">A long-term play in premium canine training and breeding. The third pillar of JD Media -- being built right, not rushed.</p>
-        <div class="venture-price">Coming Soon</div>
-        <a href="https://www.instagram.com/jd_elite_canines" target="_blank" class="social-link" style="margin-top:1rem;display:inline-block;">@jd_elite_canines</a>
+      <div class="stat-box">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Machines Running</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Self-Built</div>
       </div>
     </div>
-  </section>
-  <section id="story">
-    <p class="section-label">The Journey</p>
-    <h2 class="section-title">Built Daily</h2>
-    <div class="timeline">
-      <div class="timeline-item">
+  </div>
+
+  <!-- Art Panel with profile photo overlay -->
+  <div class="about-art-panel">
+    <!-- Street art background SVG -->
+    <svg viewBox="0 0 500 625" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+      <defs>
+        <filter id="spray"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4"/></filter>
+        <radialGradient id="panelGlow" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" style="stop-color:#D4A017;stop-opacity:0.12"/>
+          <stop offset="100%" style="stop-color:#D4A017;stop-opacity:0"/>
+        </radialGradient>
+      </defs>
+      <rect width="500" height="625" fill="#141008"/>
+      <rect width="500" height="625" fill="url(#panelGlow)"/>
+
+      <!-- Large JD ghost letters -->
+      <text x="250" y="420" font-family="Arial Black" font-size="420" font-weight="900"
+        fill="none" stroke="rgba(212,160,23,0.08)" stroke-width="1.5" text-anchor="middle">JD</text>
+
+      <!-- Corner frame marks -->
+      <polyline points="0,0 60,0 60,6" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="0,0 0,60 6,60" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="500,0 440,0 440,6" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="500,0 500,60 494,60" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="0,625 60,625 60,619" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="0,625 0,565 6,565" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="500,625 440,625 440,619" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+      <polyline points="500,625 500,565 494,565" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.6"/>
+
+      <!-- Crown motif top center -->
+      <g transform="translate(250, 55)" opacity="0.35">
+        <polyline points="-50,25 -50,-8 -22,14 0,-22 22,14 50,-8 50,25" fill="none" stroke="#D4A017" stroke-width="2"/>
+        <rect x="-50" y="25" width="100" height="20" fill="none" stroke="#D4A017" stroke-width="2"/>
+        <circle cx="-50" cy="-8" r="4" fill="#D4A017"/>
+        <circle cx="0" cy="-22" r="5" fill="#D4A017"/>
+        <circle cx="50" cy="-8" r="4" fill="#D4A017"/>
+      </g>
+
+      <!-- Bottom text tag -->
+      <g opacity="0.4">
+        <rect x="20" y="570" width="280" height="40" fill="none" stroke="#D4A017" stroke-width="1" filter="url(#spray)"/>
+        <text x="32" y="596" font-family="Arial Black" font-size="18" fill="#D4A017" font-weight="900" letter-spacing="3">JOSH DIAZ</text>
+        <text x="200" y="596" font-family="monospace" font-size="10" fill="#b89a74" letter-spacing="2">NOCO 2025</text>
+      </g>
+
+      <!-- Horizontal scan lines for texture -->
+      <rect x="0" y="0" width="500" height="625" fill="none"
+        style="background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px)"/>
+    </svg>
+    <!-- Profile photo blended on top -->
+    <img src="profile.jpg" alt="Josh Diaz" class="about-photo" onerror="this.style.display='none'"/>
+    <!-- Gold gradient overlay at bottom -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,rgba(15,13,10,0.9),transparent);z-index:1"></div>
+    <div style="position:absolute;bottom:1.2rem;left:1.2rem;z-index:2;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,160,23,0.7)">Josh Diaz · JD Media · NOCO</div>
+  </div>
+</section>
+
+<!-- ══════════════════ MURAL DIVIDER ══════════════════ -->
+<div class="mural-divider">
+  <svg viewBox="0 0 1440 180" xmlns="http://www.w3.org/2000/svg" style="height:180px">
+    <rect width="1440" height="180" fill="#141008"/>
+
+    <!-- Full-width street art banner -->
+    <!-- Background geometry -->
+    <rect x="0" y="60" width="1440" height="3" fill="rgba(212,160,23,0.08)"/>
+    <rect x="0" y="115" width="1440" height="1" fill="rgba(212,160,23,0.05)"/>
+
+    <!-- Large ghost lettering across width -->
+    <text x="720" y="145" font-family="Arial Black" font-size="160" font-weight="900"
+      fill="none" stroke="rgba(212,160,23,0.05)" stroke-width="1"
+      text-anchor="middle" letter-spacing="20">JD MEDIA</text>
+
+    <!-- Left block -->
+    <g opacity="0.35">
+      <rect x="30" y="30" width="200" height="120" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+      <text x="45" y="85" font-family="Arial Black" font-size="42" fill="#D4A017" font-weight="900" letter-spacing="2">JD</text>
+      <text x="45" y="115" font-family="monospace" font-size="11" fill="#b89a74" letter-spacing="4">MEDIA</text>
+      <text x="45" y="135" font-family="monospace" font-size="9" fill="rgba(184,154,116,0.5)" letter-spacing="3">BUILT DAILY</text>
+    </g>
+
+    <!-- Center crown -->
+    <g transform="translate(720, 90)" opacity="0.3">
+      <polyline points="-80,40 -80,-15 -40,22 0,-40 40,22 80,-15 80,40" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <rect x="-80" y="40" width="160" height="25" fill="none" stroke="#D4A017" stroke-width="2"/>
+      <circle cx="-80" cy="-15" r="5" fill="#D4A017"/>
+      <circle cx="0" cy="-40" r="7" fill="#D4A017"/>
+      <circle cx="80" cy="-15" r="5" fill="#D4A017"/>
+    </g>
+
+    <!-- Right block -->
+    <g opacity="0.35">
+      <rect x="1210" y="30" width="200" height="120" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+      <text x="1225" y="85" font-family="Arial Black" font-size="28" fill="#D4A017" font-weight="900" letter-spacing="1">NOCO</text>
+      <text x="1225" y="108" font-family="monospace" font-size="10" fill="#b89a74" letter-spacing="3">EST. 2025</text>
+      <text x="1225" y="135" font-family="monospace" font-size="9" fill="rgba(184,154,116,0.5)" letter-spacing="2">40.37°N 105.00°W</text>
+    </g>
+
+    <!-- Connecting lines -->
+    <line x1="230" y1="90" x2="640" y2="90" stroke="rgba(212,160,23,0.1)" stroke-width="1" stroke-dasharray="4 6"/>
+    <line x1="800" y1="90" x2="1210" y2="90" stroke="rgba(212,160,23,0.1)" stroke-width="1" stroke-dasharray="4 6"/>
+  </svg>
+</div>
+<!-- ══════════════════ VENTURES ══════════════════ -->
+<section id="ventures">
+  <p class="section-kicker">What We Build</p>
+  <h2 class="section-heading">The<br><span class="gold-line">Ventures</span></h2>
+  <div class="ventures-grid">
+
+    <!-- Photography -->
+    <div class="venture-card">
+      <div class="venture-num">01</div>
+      <!-- Camera icon SVG -->
+      <svg class="venture-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="14" width="40" height="28" rx="3" stroke="#D4A017" stroke-width="2"/>
+        <circle cx="24" cy="28" r="8" stroke="#D4A017" stroke-width="2"/>
+        <circle cx="24" cy="28" r="4" fill="rgba(212,160,23,0.3)"/>
+        <path d="M16 14l3-6h10l3 6" stroke="#D4A017" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="36" cy="20" r="2" fill="#D4A017"/>
+      </svg>
+      <div class="venture-status status-active">
+        <span class="status-dot"></span>Active &amp; Booking
+      </div>
+      <h3 class="venture-name">JD Photography</h3>
+      <p class="venture-type">Documentary · Film-Inspired · Real Moments</p>
+      <p class="venture-desc">Raw truth over polished perfection. Family, maternity, couples, newborn, and portrait sessions with a Kodak-film soul. I don't capture poses — I capture people.</p>
+      <div class="venture-pricing">Family $150+ &nbsp;/&nbsp; Maternity $175+ &nbsp;/&nbsp; Couples $150+</div>
+      <div class="venture-links">
+        <a href="https://www.instagram.com/joshdiazphotography" target="_blank" class="venture-link">@joshdiazphotography (Instagram)</a>
+        <a href="https://www.tiktok.com/@joshdeezo" target="_blank" class="venture-link">@joshdeezo (TikTok)</a>
+      </div>
+    </div>
+
+    <!-- Vending -->
+    <div class="venture-card">
+      <div class="venture-num">02</div>
+      <!-- Vending machine icon SVG -->
+      <svg class="venture-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="4" width="32" height="44" rx="3" stroke="#D4A017" stroke-width="2"/>
+        <rect x="12" y="8" width="24" height="18" rx="1" stroke="#D4A017" stroke-width="1.5"/>
+        <rect x="12" y="30" width="10" height="4" rx="1" fill="rgba(212,160,23,0.3)" stroke="#D4A017" stroke-width="1"/>
+        <rect x="26" y="30" width="10" height="4" rx="1" fill="rgba(212,160,23,0.3)" stroke="#D4A017" stroke-width="1"/>
+        <rect x="12" y="38" width="10" height="4" rx="1" fill="rgba(212,160,23,0.3)" stroke="#D4A017" stroke-width="1"/>
+        <circle cx="32" cy="40" r="3" stroke="#D4A017" stroke-width="1.5"/>
+        <line x1="12" y1="27" x2="36" y2="27" stroke="#D4A017" stroke-width="1"/>
+      </svg>
+      <div class="venture-status status-scaling">
+        <span class="status-dot"></span>Scaling Now
+      </div>
+      <h3 class="venture-name">JD Snack Stop</h3>
+      <p class="venture-type">Vending Machines · Cash Flow · Northern Colorado</p>
+      <p class="venture-desc">Building a vending network across gyms, warehouses, schools, and salons throughout Northern Colorado. Currently running 2 machines with a target of 5–10. Passive income, active hustle.</p>
+      <div class="venture-pricing">$300–$500 per machine / month</div>
+      <div class="venture-links">
+        <a href="https://www.instagram.com/jd.snack.stop" target="_blank" class="venture-link">@jd.snack.stop (Instagram)</a>
+        <a href="https://www.tiktok.com/@jd.snack.stop" target="_blank" class="venture-link">@jd.snack.stop (TikTok)</a>
+      </div>
+    </div>
+
+    <!-- Canines -->
+    <div class="venture-card">
+      <div class="venture-num">03</div>
+      <!-- Dog paw icon SVG -->
+      <svg class="venture-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="24" cy="30" rx="12" ry="10" stroke="#D4A017" stroke-width="2"/>
+        <ellipse cx="11" cy="20" rx="4" ry="5.5" stroke="#D4A017" stroke-width="1.5"/>
+        <ellipse cx="37" cy="20" rx="4" ry="5.5" stroke="#D4A017" stroke-width="1.5"/>
+        <ellipse cx="18" cy="14" rx="3.5" ry="4.5" stroke="#D4A017" stroke-width="1.5"/>
+        <ellipse cx="30" cy="14" rx="3.5" ry="4.5" stroke="#D4A017" stroke-width="1.5"/>
+        <circle cx="24" cy="32" r="2" fill="rgba(212,160,23,0.4)"/>
+      </svg>
+      <div class="venture-status status-dev">
+        <span class="status-dot"></span>In Development
+      </div>
+      <h3 class="venture-name">JD Elite Canines</h3>
+      <p class="venture-type">Premium Canines · Training · Long Game</p>
+      <p class="venture-desc">The third pillar of JD Media. Premium canine training and breeding being built the right way — with patience, standards, and real expertise. This one's being built right, not rushed.</p>
+      <div class="venture-pricing">Coming Soon</div>
+      <div class="venture-links">
+        <a href="https://www.instagram.com/jd_elite_canines" target="_blank" class="venture-link">@jd_elite_canines (Instagram)</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ STORY ══════════════════ -->
+<section id="story">
+  <div>
+    <p class="section-kicker">The Journey</p>
+    <h2 class="section-heading">Built<br><span class="gold-line">Daily</span></h2>
+
+    <!-- Story art panel -->
+    <div style="margin-top:3rem;border:1px solid rgba(212,160,23,0.2);overflow:hidden">
+      <svg viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <filter id="sprayStory"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/></filter>
+        </defs>
+        <rect width="520" height="340" fill="#141008"/>
+
+        <!-- Big ghost EMPIRE text -->
+        <text x="260" y="250" font-family="Arial Black" font-size="200" font-weight="900"
+          fill="none" stroke="rgba(212,160,23,0.06)" stroke-width="1"
+          text-anchor="middle" letter-spacing="-5">EMPIRE</text>
+
+        <!-- Frame corners -->
+        <polyline points="0,0 50,0 50,5" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="0,0 0,50 5,50" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="520,0 470,0 470,5" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="520,0 520,50 515,50" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="0,340 50,340 50,335" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="0,340 0,290 5,290" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="520,340 470,340 470,335" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+        <polyline points="520,340 520,290 515,290" fill="none" stroke="#D4A017" stroke-width="2" opacity="0.5"/>
+
+        <!-- Center medallion -->
+        <g transform="translate(260, 170)" opacity="0.25">
+          <circle cx="0" cy="0" r="80" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+          <circle cx="0" cy="0" r="65" fill="none" stroke="#D4A017" stroke-width="0.8"/>
+          <polygon points="0,-50 14,-14 50,-14 22,10 32,46 0,26 -32,46 -22,10 -50,-14 -14,-14" fill="#D4A017"/>
+          <text x="0" y="68" font-family="monospace" font-size="10" fill="#D4A017" text-anchor="middle" letter-spacing="4">JD MEDIA</text>
+          <text x="0" y="-60" font-family="monospace" font-size="9" fill="#b89a74" text-anchor="middle" letter-spacing="3">NOCO · 2025</text>
+        </g>
+
+        <!-- Spray text blocks -->
+        <g opacity="0.3" filter="url(#sprayStory)">
+          <text x="20" y="310" font-family="Arial Black" font-size="14" fill="#D4A017" font-weight="900" letter-spacing="3">GRIND IS THE CURRENCY</text>
+        </g>
+        <text x="350" y="310" font-family="monospace" font-size="10" fill="rgba(184,154,116,0.4)" letter-spacing="2">EST. 2025</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div>
         <p class="timeline-date">The Beginning</p>
         <h3 class="timeline-title">Day Job + A Camera</h3>
-        <p class="timeline-body">Started as a Bartender with a passion for photography and an obsession with building something of my own. One camera. Real people. No studio pretense.</p>
+        <p class="timeline-body">Started bartending with a camera and an obsession with building something real. One lens. Real people. No studio pretense. Just truth.</p>
       </div>
-      <div class="timeline-item">
-        <p class="timeline-date">The Grind</p>
-        <h3 class="timeline-title">JD Photography Goes Live</h3>
-        <p class="timeline-body">Launched JD Photography -- family, maternity, couples, and portrait sessions. Built on word of mouth and raw, film-inspired work that stood out.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div>
+        <p class="timeline-date">The Expansion</p>
+        <h3 class="timeline-title">First Machine Drops</h3>
+        <p class="timeline-body">Placed the first vending machine. Learned the routes, the restocks, the margins. Proved to myself that passive income isn't a myth — it's a math problem.</p>
       </div>
-      <div class="timeline-item">
-        <p class="timeline-date">Diversifying</p>
-        <h3 class="timeline-title">First Vending Machine</h3>
-        <p class="timeline-body">Invested in the first JD Snack Stop machine. Learned the system, locked in a location, and started generating cash flow outside the 9-to-5. Then added a second.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div>
+        <p class="timeline-date">The Brand</p>
+        <h3 class="timeline-title">JD Media is Born</h3>
+        <p class="timeline-body">Photography. Vending. Canines. Three ventures, one umbrella, one mission. JD Media becomes the name for everything I'm building under Northern Colorado skies.</p>
       </div>
-      <div class="timeline-item">
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div>
         <p class="timeline-date">Right Now</p>
-        <h3 class="timeline-title">JD Media Is Born</h3>
-        <p class="timeline-body">Husband. New father. Building three businesses simultaneously. JD Media becomes the umbrella -- the brand, the story, the proof that a working-class dad can build an empire.</p>
-      </div>
-      <div class="timeline-item">
-        <p class="timeline-date">The Target</p>
-        <h3 class="timeline-title">$3,500 / Month Side Income</h3>
-        <p class="timeline-body">Photography bookings consistent, 5-10 vending machines running, debt eliminated, $1K/month going to investments. Empire mode. No shortcuts.</p>
+        <h3 class="timeline-title">Empire Mode</h3>
+        <p class="timeline-body">Scaling the machine network. Booking photography sessions. Laying the groundwork for JD Elite Canines. Every day is another brick. The structure is showing.</p>
       </div>
     </div>
-  </section>
-  <section id="contact">
-    <div class="contact-info">
-      <p class="section-label">Get In Touch</p>
-      <h2 class="section-title">Let's Work</h2>
-      <p>Ready to book a session or talk business? Reach out directly.</p>
-      <p style="margin-top:1.5rem;"><strong style="color:var(--cream);">Email:</strong> <a href="mailto:joshdiaz7408@gmail.com">joshdiaz7408@gmail.com</a></p>
-      <p><strong style="color:var(--cream);">Location:</strong> Colorado</p>
-      <p><strong style="color:var(--cream);">Photography:</strong> Family $150+ | Maternity $175+ | Couples $150+</p>
-      <div class="contact-socials">
-        <a href="https://www.instagram.com/josh.deezo" target="_blank" class="social-link">Instagram</a>
-        <a href="https://www.tiktok.com/@joshdeezo" target="_blank" class="social-link">TikTok</a>
-        <a href="https://www.facebook.com/josh.diaz.79" target="_blank" class="social-link">Facebook</a>
-        <a href="https://www.youtube.com/@deezo91" target="_blank" class="social-link">YouTube</a>
+  </div>
+</section>
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<section id="contact">
+  <div class="contact-intro">
+    <p class="section-kicker">Let's Connect</p>
+    <h2 class="section-heading">Book &amp;<br><span class="gold-line">Contact</span></h2>
+    <p>Whether you're looking to book a shoot, ask about vending locations, or just want to connect — reach out. Every empire is built on real conversations.</p>
+    <p>Email: <a href="mailto:joshdiaz7408@gmail.com">joshdiaz7408@gmail.com</a></p>
+    <p>Based in: Northern Colorado</p>
+    <div class="contact-socials">
+      <a href="https://www.instagram.com/joshdiazphotography" target="_blank" class="social-pill">📷 Photography IG</a>
+      <a href="https://www.instagram.com/jd.snack.stop" target="_blank" class="social-pill">🤝 Snack Stop IG</a>
+      <a href="https://www.instagram.com/jd_elite_canines" target="_blank" class="social-pill">🐾 Elite Canines IG</a>
+      <a href="https://www.tiktok.com/@joshdeezo" target="_blank" class="social-pill">▶ TikTok</a>
+    </div>
+  </div>
+
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" placeholder="Josh" required/>
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" placeholder="Smith" required/>
       </div>
     </div>
-    <div>
-      <form class="contact-form" onsubmit="return false;">
-        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Jane Smith" /></div>
-        <div class="form-group"><label>Email</label><input type="email" placeholder="jane@email.com" /></div>
-        <div class="form-group">
-          <label>I'm Interested In</label>
-          <select>
-            <option>Family Session</option>
-            <option>Maternity Session</option>
-            <option>Couples Session</option>
-            <option>Newborn Session</option>
-            <option>Portraits</option>
-            <option>Vending Machine Inquiry</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Message</label><textarea rows="5" placeholder="Tell me what you're looking for..."></textarea></div>
-        <button type="submit" class="btn-primary" style="width:100%;text-align:center;">Send Message</button>
-      </form>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@email.com" required/>
     </div>
-  </section>
-  <footer>
-    <div class="footer-logo">JD<span>.</span>MEDIA</div>
-    <p class="footer-copy">2025 JD Media -- Josh Diaz -- Colorado -- Built Daily</p>
-  </footer>
+    <div class="form-group">
+      <label for="venture">I'm Reaching Out About</label>
+      <select id="venture" name="venture" required>
+        <option value="" disabled selected>Select a venture...</option>
+        <option value="photography">📷 JD Photography — Book a Session</option>
+        <option value="vending">🤝 JD Snack Stop — Vending Inquiry</option>
+        <option value="canines">🐾 JD Elite Canines — Canine Inquiry</option>
+        <option value="general">💬 General / JD Media</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Tell me what you're looking for..." required></textarea>
+    </div>
+    <button type="submit" class="btn-submit">Send Message →</button>
+  </form>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo">JD<em>.</em>MEDIA</div>
+    <div class="footer-tagline">Built Daily · Northern Colorado · Est. 2025</div>
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#ventures">Ventures</a>
+    <a href="#story">Story</a>
+    <a href="#contact">Contact</a>
+    <a href="https://www.instagram.com/joshdiazphotography" target="_blank">Instagram</a>
+    <a href="https://www.tiktok.com/@joshdeezo" target="_blank">TikTok</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 JD Media · Josh Diaz<br>
+    All rights reserved · officialjoshdiaz.com
+  </div>
+</footer>
+
+<script>
+// Smooth nav active state
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+  });
+});
+
+// Intersection observer for entrance animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.venture-card, .timeline-item, .stat-box').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// Form submit handler
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = 'Message Sent ✓';
+  btn.style.background = 'transparent';
+  btn.style.color = 'var(--gold)';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Send Message →';
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 4000);
+}
+</script>
+
 </body>
 </html>
